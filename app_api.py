@@ -107,7 +107,7 @@ def return_mask(data):
         label_mask = np.argmax(pr_mask, axis=0)
         #print(label_mask.shape, image.shape, gt_mask.shape)
 
-        return(colorize_mask(label_mask))
+        return({"prediction": colorize_mask(label_mask)})
     else:
         return None
 

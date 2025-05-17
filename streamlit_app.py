@@ -33,8 +33,11 @@ if uploaded_file is not None:
             # Проверка статуса ответа
             if response.status_code == 200:
                 image = response.json()["prediction"]
-                st.success(f"Predicted Segmentation:")
-                st.image(image, width=None, clamp=True, channels="BGR", output_format="PNG")
+                if image != None:
+                    st.success(f"Predicted Segmentation:")
+                    st.image(image, width=None, clamp=True, channels="BGR", output_format="PNG")
+                else:
+                    st.error(f"No image returned.")
             else:
                 st.error(f"Request failed with status code {response.status_code}")
         except ConnectionError as e:
