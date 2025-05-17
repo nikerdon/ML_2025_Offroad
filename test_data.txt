@@ -1,0 +1,3 @@
+1) 010 -- resnet18 -- dice_loss - 0.02316, fscore - 0.9769, iou_score - 0.9562
+2) 011 -- mit_b1 -- dice_loss - 0.02306, fscore - 0.977, iou_score - 0.9564
+3) 012 -- efficientnet-b1 -- dice_loss - 0.02238, fscore - 0.9776, iou_score - 0.9577
