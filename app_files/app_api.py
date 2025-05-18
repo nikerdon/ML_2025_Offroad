@@ -17,6 +17,7 @@ import numpy as np
 import torch
 import segmentation_models_pytorch as smp
 import albumentations as albu
+import json
 
 app = FastAPI()
 
@@ -79,8 +80,8 @@ def colorize_mask(mask: np.ndarray):
     #colored_mask.transpose()
     return colored_mask#, square_ratios
 
-def get_image(data):
-    image = cv.imread(data)
+def get_image(image):
+    #image = cv.imread(data)
     image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
 
     if image != None:
@@ -119,8 +120,9 @@ def return_mask(data):
 def predict_model(input_data):
     global request_count
     request_count += 1
-
-    best_m = return_mask(input_data)
+    python_img = json.loads(input_data)
+    image = np.array(python_img)
+    best_m = return_mask(image)
     
     # ***** choose image type here ******
     # I start with a numpy array, need in this form: (w,h,3)
