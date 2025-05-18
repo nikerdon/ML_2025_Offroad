@@ -35,12 +35,12 @@ if uploaded_file is not None:
         st.image(img, width=None, clamp=True, channels="BGR", output_format="PNG")
         # change the type of the image
         #st.text(img.shape) HWC
-        json_img = json.dumps(img.tolist())
+        #json_img = json.dumps(img.tolist())
         #st.image(arr, width=None, clamp=True, channels="BGR", output_format="PNG")
         # pass image to backend, get an image as a result
         try:
             # Отправка запроса к Flask API
-            response = requests.post(f"http://{ip_api}:{port_api}/predict_model", json=json_img)
+            response = requests.post(f"http://{ip_api}:{port_api}/predict_model", json={"image": "img.jpg"})
 
             # Проверка статуса ответа
             if response.status_code == 200:
