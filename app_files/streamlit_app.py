@@ -21,13 +21,14 @@ st.title("Offroad Segmentation Prediction")
 #https://docs.streamlit.io/develop/api-reference/media/st.image
 
 
-img_types = ["bmp", "dip", "jpg", "jpeg", "jpe", "jp2", "png", "webp", "tiff", "tif", "pbm", "pgm", "ppm", "sr", "ras"]
+#img_types = ["bmp", "dip", "jpg", "jpeg", "jpe", "jp2", "png", "webp", "tiff", "tif", "pbm", "pgm", "ppm", "sr", "ras"]
+img_types = ["jpg", "jpeg"]
 
 uploaded_file = st.file_uploader("Choose an image", type=img_types)#, on_change=None, args=None, kwargs=None)
 
 if uploaded_file is not None:
     img = Image.open(uploaded_file)
-    img = img.save('img.jpg') # I could send the file path instead, but this way there will not be an issue regarding where the image is stored
+    img.save('img.jpg') # I could send the file path instead, but this way there will not be an issue regarding where the image is stored
     img = cv.imread('img.jpg')
     if img is None:
         st.error("Image could not be read.")
@@ -40,16 +41,17 @@ if uploaded_file is not None:
         # pass image to backend, get an image as a result
         try:
             # Отправка запроса к Flask API
-            response = requests.post(f"http://{ip_api}:{port_api}/predict_model", json={"image": "img.jpg"})
+            #response = requests.post(f"http://{ip_api}:{port_api}/predict_model", json={"image": "img.jpg"})
+            response = requests.get(f"http://{ip_api}:{port_api}/predict_model")
 
             # Проверка статуса ответа
             if response.status_code == 200:
-                image = response.json()["prediction"]
+                image = cv.imread('mask.png')#response.json()["prediction"]
                 if image is not None:
                     st.success(f"Predicted Segmentation:")
-                    python_img = json.loads(image)
-                    img_ret = np.array(python_img)
-                    st.image(img_ret, width=None, clamp=True, channels="RGB", output_format="PNG")
+                    #python_img = json.loads(image)
+                    #img_ret = np.array(python_img)
+                    st.image(image, width=None, clamp=True, channels="BGR", output_format="PNG")
                 else:
                     st.error(f"No image returned.")
             else:

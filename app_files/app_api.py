@@ -86,7 +86,7 @@ def get_image(file):
     image = cv.imread(file)
     image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
 
-    if image != None:
+    if image is not None:
         test_transform = get_test_augmentation()
         preprocessing = get_preprocessing(preprocessing_fn)
 
@@ -102,7 +102,7 @@ def return_mask(data):
     #image, gt_mask = plot#self.test_dataset[n]
     #gt_mask = gt_mask.squeeze()
     
-    if image != None:
+    if image is not None:
         x_tensor = torch.from_numpy(image).to(DEVICE).unsqueeze(0)
         pr_mask = model(x_tensor)
         pr_mask = pr_mask.squeeze().cpu().detach().numpy()
@@ -110,7 +110,8 @@ def return_mask(data):
         label_mask = np.argmax(pr_mask, axis=0)
         #print(label_mask.shape, image.shape, gt_mask.shape)
 
-        return({"prediction": colorize_mask(label_mask)})
+        return(colorize_mask(label_mask))
+        #return({"prediction": colorize_mask(label_mask)})
     else:
         return None
 
@@ -119,6 +120,14 @@ def return_mask(data):
 class PredictionInput(BaseModel):
     image: list
 
+@app.get("/predict_model")
+def predict_model():
+    global request_count
+    request_count += 1
+    best_m = return_mask('img.jpg')
+    cv.imwrite('mask.png', best_m)
+
+'''
 @app.post("/predict_model")
 def predict_model(input_data: PredictionInput):
     global request_count
@@ -133,6 +142,7 @@ def predict_model(input_data: PredictionInput):
     # should change in routine colorize_mask
 
     return {best_m}
+'''
 
 # host = 0.0.0.0 for docker, 127.0.0.1 without docker
 if __name__ == '__main__':
