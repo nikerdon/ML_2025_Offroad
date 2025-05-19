@@ -2,9 +2,14 @@
 #simple test script
 
 import streamlit as st 
-import cv2 as cv
 import requests
 from requests.exceptions import ConnectionError
+#in order to read the image
+from PIL import Image 
+import cv2 as cv
+# in order to send the image in the correct format
+import numpy as np 
+import json
 
 ip_api = "127.0.0.1"
 port_api = "5000"
@@ -21,21 +26,30 @@ img_types = ["bmp", "dip", "jpg", "jpeg", "jpe", "jp2", "png", "webp", "tiff", "
 uploaded_file = st.file_uploader("Choose an image", type=img_types)#, on_change=None, args=None, kwargs=None)
 
 if uploaded_file is not None:
-    img = cv.imread(uploaded_file.getvalue())
-    if img == None:
+    img = Image.open(uploaded_file)
+    img = img.save('img.jpg') # I could send the file path instead, but this way there will not be an issue regarding where the image is stored
+    img = cv.imread('img.jpg')
+    if img is None:
         st.error("Image could not be read.")
     else:
+        st.image(img, width=None, clamp=True, channels="BGR", output_format="PNG")
+        # change the type of the image
+        #st.text(img.shape) HWC
+        #json_img = json.dumps(img.tolist())
+        #st.image(arr, width=None, clamp=True, channels="BGR", output_format="PNG")
         # pass image to backend, get an image as a result
         try:
             # Отправка запроса к Flask API
-            response = requests.post(f"http://{ip_api}:{port_api}/predict_model", json=uploaded_file.getvalue())
+            response = requests.post(f"http://{ip_api}:{port_api}/predict_model", json={"image": "img.jpg"})
 
             # Проверка статуса ответа
             if response.status_code == 200:
                 image = response.json()["prediction"]
-                if image != None:
+                if image is not None:
                     st.success(f"Predicted Segmentation:")
-                    st.image(image, width=None, clamp=True, channels="BGR", output_format="PNG")
+                    python_img = json.loads(image)
+                    img_ret = np.array(python_img)
+                    st.image(img_ret, width=None, clamp=True, channels="RGB", output_format="PNG")
                 else:
                     st.error(f"No image returned.")
             else:
