@@ -124,7 +124,7 @@ class PredictionInput(BaseModel):
 def predict_model():
     global request_count
     request_count += 1
-    best_m = return_mask('img.jpg')
+    best_m = return_mask('img.png')
     cv.imwrite('mask.png', best_m)
 
 '''

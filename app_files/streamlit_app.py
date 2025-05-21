@@ -22,18 +22,22 @@ st.title("Offroad Segmentation Prediction")
 
 
 #img_types = ["bmp", "dip", "jpg", "jpeg", "jpe", "jp2", "png", "webp", "tiff", "tif", "pbm", "pgm", "ppm", "sr", "ras"]
-img_types = ["jpg", "jpeg"]
+img_types = ["jpg", "jpeg", "png"]
 
 uploaded_file = st.file_uploader("Choose an image", type=img_types)#, on_change=None, args=None, kwargs=None)
 
 if uploaded_file is not None:
     img = Image.open(uploaded_file)
-    img.save('img.jpg') # I could send the file path instead, but this way there will not be an issue regarding where the image is stored
-    img = cv.imread('img.jpg')
+    img.save('img.png') # I could send the file path instead, but this way there will not be an issue regarding where the image is stored
+    img = cv.imread('img.png')
+    #pil_image = PIL.Image.open('Image.jpg').convert('RGB')
+    #open_cv_image = numpy.array(pil_image)
+    # Convert RGB to BGR
+    #open_cv_image = open_cv_image[:, :, ::-1].copy()
     if img is None:
         st.error("Image could not be read.")
     else:
-        st.image(img, width=None, clamp=True, channels="BGR", output_format="PNG")
+        st.image(img, width=448, clamp=True, channels="BGR", output_format="PNG")
         # change the type of the image
         #st.text(img.shape) HWC
         #json_img = json.dumps(img.tolist())
