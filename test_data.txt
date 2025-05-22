@@ -7,3 +7,6 @@
 6) 021 -- mit_b1 + DPT           -- dice_loss - 0.02306, fscore - 0.977, iou_score - 0.9564
 7) 022 -- efficientnet-b1 + DPT  -- dice_loss - 0.02238, fscore - 0.9776, iou_score - 0.9577
 8) 023 -- mobileone_S1 + DPT     -- dice_loss - 0.0228, fscore - 0.9772, iou_score - 0.957
+
+Models:
+https://drive.google.com/drive/folders/1MBqW16t5Z17dmLdYkmOfANdk1HFIUf5s?usp=drive_link
