@@ -1,3 +1,39 @@
+# Offroad Segmentation Prediction
+---
+
+This project aims to predict offroad segmentation using machine learning. An API was developed to serve predictions, and the solution was containerized with Docker for seamless deployment.
+The dataset used:
+ - Off-Road Terrain Attention Region Images
+ - Yamaha-CMU Off-Road Dataset (1348 пар)
+ - Off-road Autonomous Driving Segmentation Dataset
+
+# Preprocessing
+---
+ - We reduce all images to a single size of 960 x 544 pixels 
+ - We bring all the masks to a single appearance: we use white for the road and black for everything else.;
+ - We delete inappropriate images (for example, with bad masks, without a road, with a field road, a “good” road, transparent fences, etc.); 
+ - Removing mask fragments smaller than the specified threshold (<500 pixels).
+
+# Training and Testing
+---
+
+Results:
+
+| Model                  | dice loss | f-score | iou-score |
+|------------------------|-----------|---------|-----------|
+| resnet18 + Unet        | 0,0232    | 0,9769  | 0,9562    |
+| mit_b1 + Unet          | 0,0231    | 0,9770  | 0,9564    |
+| efficientnet-b1 + Unet | 0,0224    | 0,9776  | 0,9577    |
+| mobileone_S1 + Unet    | 0,0228    | 0,9772  | 0,9570    |
+| resnet18 + DPT         | 0,0232    | 0,9769  | 0,9562    |
+| mit_b1 + DPT           | 0,0231    | 0,9770  | 0,9564    |
+| efficientnet-b1 + DPT  | 0,0224    | 0,9776  | 0,9577    |
+| mobileone_S1 + DPT     | 0,0228    | 0,9772  | 0,9570    |
+
+
+# Best model
+---
+
 model - resnet 18 с аугументацией: \
  albu.HorizontalFlip(p=0.5), \
  albu.LongestMaxSize(max_size=INFER_HEIGHT, always_apply=True), \
@@ -12,4 +48,35 @@ model - resnet 18 с аугументацией: \
  из:  
   - https://theairlab.org/yamaha-offroad-dataset/ 
   - https://www.kaggle.com/datasets/magnumresearchgroup/offroad-terrain-attention-region-images?resource=download 
-  - http://rugd.vision/ 
+  - http://rugd.vision/
+    
+
+# Backend and Frontend
+---
+Backend: python app_api.py
+Frontend: streamlit run streamlit_app.py
+
+Step 1: Installing Required Libraries
+Ensure you have the necessary libraries installed:  
+
+> pip install fastapi uvicorn pydantic scikit-learn pandas
+
+Note: You may need to upgrade or force a reinstall. If you encounter package conflicts, try these commands:  
+
+> pip install --upgrade --force-reinstall <package>
+> pip install -I <package>  # Short for --ignore-installed
+> pip install --ignore-installed <package>
+
+Step 2: Run the `app_api.py`
+
+
+# Team members:
+---
+
+Nikita Korenko
+
+Elizabeth Gould
+
+Sofiia Mylnikova
+
+Gibert Elena
