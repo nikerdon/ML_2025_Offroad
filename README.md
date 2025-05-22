@@ -8,4 +8,8 @@ model - resnet 18 с аугументацией: \
 Результат на валидационном датасете: valid: 100%|██████████| 186/186 [00:19<00:00,  9.35it/s, dice_loss - 0.3293, fscore - 0.6708, iou_score - 0.5065]
 
 
-Данные: https://drive.google.com/drive/folders/1P---58NLcYLQX1sArkG0ea_t2fdKsiFp?usp=drive_link
+Данные: https://drive.google.com/drive/folders/1P---58NLcYLQX1sArkG0ea_t2fdKsiFp?usp=drive_link \
+ из:  
+  - https://theairlab.org/yamaha-offroad-dataset/ 
+  - https://www.kaggle.com/datasets/magnumresearchgroup/offroad-terrain-attention-region-images?resource=download 
+  - http://rugd.vision/ 
